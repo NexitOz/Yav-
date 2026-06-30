@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Явь — кожаные изделия ручной работы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Forum&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --kraft:#cdb78f;
+    --kraft-dark:#b59d72;
+    --ink:#241a10;
+    --leather:#5a3420;
+    --leather-deep:#2e1b10;
+    --brass:#a87a3c;
+    --brass-light:#cfa563;
+    --cream:#f3e9d4;
+    --line: rgba(36,26,16,0.18);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--kraft);
+    background-image:
+      radial-gradient(ellipse at top left, rgba(255,255,255,0.08), transparent 50%),
+      repeating-linear-gradient(90deg, rgba(36,26,16,0.02) 0px, rgba(36,26,16,0.02) 1px, transparent 1px, transparent 3px);
+    color:var(--ink);
+    font-family:'Cormorant Garamond', serif;
+    font-size:19px;
+    line-height:1.5;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{display:block; width:100%; height:100%; object-fit:cover;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--leather);
+    opacity:0.75;
+  }
+  h1,h2,h3{
+    font-family:'Forum', serif;
+    font-weight:400;
+    letter-spacing:0.01em;
+    color:var(--leather-deep);
+  }
+
+  /* ===== HEADER ===== */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 5vw;
+    background:linear-gradient(to bottom, rgba(36,26,16,0.55), transparent);
+    transition: background 0.3s ease, padding 0.3s ease;
+  }
+  header.scrolled{
+    background:var(--kraft);
+    box-shadow:0 1px 0 var(--line);
+    padding:12px 5vw;
+  }
+  .logo-mark{display:flex; align-items:center; gap:10px;}
+  .logo-mark img{width:34px; height:34px; border-radius:50%; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3));}
+  .logo-text{font-family:'Forum', serif; font-size:22px; letter-spacing:0.08em; color:var(--cream); transition:color 0.3s;}
+  header.scrolled .logo-text{color:var(--leather-deep);}
+  nav{display:flex; gap:34px;}
+  nav a{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--cream); opacity:0.85; transition:opacity 0.2s, color 0.3s;
+    position:relative; padding-bottom:3px;
+  }
+  header.scrolled nav a{color:var(--leather-deep);}
+  nav a:hover{opacity:1;}
+  nav a::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background:currentColor; transform:scaleX(0); transform-origin:right;
+    transition:transform 0.25s ease;
+  }
+  nav a:hover::after{transform:scaleX(1); transform-origin:left;}
+  @media (max-width:760px){ nav{display:none;} }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative; height:100vh; min-height:640px;
+    display:flex; align-items:flex-end;
+    overflow:hidden;
+  }
+  .hero-bg{position:absolute; inset:0;}
+  .hero-bg img{filter:saturate(0.9) brightness(0.55);}
+  .hero-bg::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(20,13,7,0.92) 0%, rgba(20,13,7,0.35) 55%, rgba(20,13,7,0.15) 100%);
+  }
+  .hero-content{
+    position:relative; z-index:2; padding:0 5vw 7vw;
+    max-width:780px;
+  }
+  .hero-content .eyebrow{color:var(--brass-light); opacity:1; margin-bottom:18px; display:block;}
+  .hero-content h1{
+    color:var(--cream);
+    font-size:clamp(48px, 8vw, 104px);
+    line-height:0.95;
+    letter-spacing:0.01em;
+  }
+  .hero-content h1 em{font-style:italic; color:var(--brass-light);}
+  .hero-content p{
+    margin-top:24px; max-width:480px;
+    font-size:20px; color:rgba(243,233,212,0.82); font-style:italic;
+  }
+  .hero-seal{
+    position:absolute; top:14vh; right:7vw; z-index:2;
+    width:140px; height:140px; opacity:0.95;
+    animation:sealFloat 7s ease-in-out infinite;
+  }
+  .hero-seal img{border-radius:50%; box-shadow:0 8px 30px rgba(0,0,0,0.5);}
+  @keyframes sealFloat{ 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-10px) rotate(2deg);} }
+  @media (max-width:760px){ .hero-seal{width:84px; height:84px; top:10vh; right:6vw;} }
+  .scroll-cue{
+    position:absolute; bottom:28px; left:5vw; z-index:2;
+    display:flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.18em;
+    text-transform:uppercase; color:rgba(243,233,212,0.6);
+  }
+  .scroll-cue .line{width:32px; height:1px; background:currentColor;}
+
+  /* ===== SECTION shells ===== */
+  section{padding:120px 5vw;}
+  .section-head{display:flex; justify-content:space-between; align-items:flex-end; gap:30px; margin-bottom:56px; border-bottom:1px solid var(--line); padding-bottom:24px;}
+  .section-head h2{font-size:clamp(34px,4vw,52px);}
+  .section-head .num{font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--leather); opacity:0.6;}
+
+  /* ===== ABOUT ===== */
+  .about{display:grid; grid-template-columns:1fr 1.1fr; gap:70px; align-items:center;}
+  .about-text p{margin-bottom:18px; max-width:480px; color:rgba(36,26,16,0.88);}
+  .about-text p.lead{font-size:24px; font-style:italic; color:var(--leather-deep);}
+  .about-image{position:relative; aspect-ratio:4/5; border-radius:2px; overflow:hidden; box-shadow:0 26px 50px -20px rgba(36,26,16,0.5);}
+  .about-image img{filter:saturate(0.95);}
+  .stitch-frame{position:absolute; inset:12px; border:1px dashed rgba(243,233,212,0.5); pointer-events:none;}
+  @media (max-width:860px){ .about{grid-template-columns:1fr;} .about-image{order:-1;} }
+
+  /* ===== PROCESS (workshop) ===== */
+  .process{background:var(--leather-deep); color:var(--cream); position:relative;}
+  .process .section-head{border-color:rgba(243,233,212,0.18);}
+  .process .section-head h2{color:var(--cream);}
+  .process .section-head .num{color:var(--brass-light); opacity:0.9;}
+  .process-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:2px;
+    background:rgba(243,233,212,0.08);
+  }
+  .process-cell{
+    background:var(--leather-deep); position:relative; aspect-ratio:3/4; overflow:hidden;
+  }
+  .process-cell:nth-child(2),.process-cell:nth-child(3){aspect-ratio:3/4.6;}
+  .process-cell img{transition:transform 0.6s cubic-bezier(.2,.7,.2,1); filter:saturate(0.85) brightness(0.92);}
+  .process-cell:hover img{transform:scale(1.06);}
+  .process-cell .tag{
+    position:absolute; left:16px; bottom:14px; z-index:2;
+    font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--cream);
+  }
+  .process-cell::after{content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(20,13,7,0.75), transparent 45%);}
+  @media (max-width:860px){ .process-grid{grid-template-columns:repeat(2,1fr);} }
+
+  /* ===== CATALOG ===== */
+  .catalog-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:40px;}
+  .product-card{display:flex; flex-direction:column;}
+  .product-frame{
+    position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--kraft-dark);
+    box-shadow:0 18px 36px -18px rgba(36,26,16,0.45);
+  }
+  .product-frame img{transition:transform 0.5s ease;}
+  .product-card:hover .product-frame img{transform:scale(1.04);}
+  .product-meta{display:flex; justify-content:space-between; align-items:baseline; padding-top:16px;}
+  .product-meta h3{font-size:23px;}
+  .product-meta .price{font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--leather); opacity:0.8;}
+  .product-desc{font-size:16px; color:rgba(36,26,16,0.7); margin-top:4px;}
+  @media (max-width:860px){ .catalog-grid{grid-template-columns:1fr;} }
+
+  /* ===== MATERIALS strip ===== */
+  .materials{
+    display:grid; grid-template-columns:1.2fr 1fr; gap:0;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:0; margin:0 0;
+  }
+  .materials-img{aspect-ratio:16/11; overflow:hidden;}
+  .materials-text{padding:70px 6vw; display:flex; flex-direction:column; justify-content:center;}
+  .materials-text h2{font-size:clamp(30px,3.6vw,46px); margin-bottom:20px;}
+  .materials-text p{max-width:440px; color:rgba(36,26,16,0.85); margin-bottom:14px;}
+  .materials-list{margin-top:18px; display:flex; flex-direction:column; gap:10px;}
+  .materials-list div{
+    display:flex; justify-content:space-between; font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+    border-bottom:1px solid var(--line); padding-bottom:10px; color:var(--leather);
+  }
+  @media (max-width:860px){ .materials{grid-template-columns:1fr;} }
+
+  /* ===== CONTACT / CTA ===== */
+  .cta{
+    position:relative; text-align:center; padding:160px 5vw;
+    background:var(--leather-deep); color:var(--cream); overflow:hidden;
+  }
+  .cta::before{
+    content:""; position:absolute; inset:0; opacity:0.12;
+    background-image:url('images/leather-sheet.jpg'); background-size:cover; background-position:center;
+    filter:grayscale(1);
+  }
+  .cta-inner{position:relative; z-index:2;}
+  .cta .eyebrow{color:var(--brass-light); opacity:1; margin-bottom:18px;}
+  .cta h2{color:var(--cream); font-size:clamp(36px,5vw,64px); max-width:760px; margin:0 auto 30px;}
+  .cta-form{display:flex; justify-content:center; gap:0; max-width:460px; margin:0 auto;}
+  .cta-form input{
+    flex:1; background:transparent; border:none; border-bottom:1px solid rgba(243,233,212,0.4);
+    color:var(--cream); font-family:'Cormorant Garamond', serif; font-size:18px; font-style:italic;
+    padding:12px 4px; outline:none;
+  }
+  .cta-form input::placeholder{color:rgba(243,233,212,0.45);}
+  .cta-form button{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--leather-deep); background:var(--brass-light); border:none; padding:0 26px; margin-left:18px;
+    cursor:pointer; transition:background 0.2s;
+  }
+  .cta-form button:hover{background:var(--cream);}
+
+  /* ===== FOOTER ===== */
+  footer{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;
+    padding:36px 5vw; border-top:1px solid var(--line);
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em;
+    color:var(--leather); opacity:0.75;
+  }
+  footer a{opacity:0.9;}
+  footer a:hover{opacity:1; text-decoration:underline;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <a href="#" class="logo-mark">
+    <img src="images/emblem.jpg" alt="Явь">
+    <span class="logo-text">Явь</span>
+  </a>
+  <nav>
+    <a href="#about">О мастерской</a>
+    <a href="#process">Процесс</a>
+    <a href="#catalog">Изделия</a>
+    <a href="#materials">Материалы</a>
+    <a href="#contact">Заказ</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"><img src="images/workshop-3.jpg" alt="Мастерская Явь"></div>
+  <div class="hero-seal"><img src="images/emblem.jpg" alt="Клеймо Явь"></div>
+  <div class="hero-content">
+    <span class="eyebrow">Кожевенная мастерская · ручная работа</span>
+    <h1>Вещи,<br>сшитые <em>в явь</em></h1>
+    <p>Растительное дубление, ручной шов и латунная фурнитура — без конвейера и компромиссов. Каждое изделие проходит через одни и те же руки от куска кожи до готовой вещи.</p>
+  </div>
+  <div class="scroll-cue"><span class="line"></span><span>Листайте вниз</span></div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-text">
+    <span class="eyebrow">О мастерской</span>
+    <h2 style="margin:18px 0 26px; font-size:clamp(32px,4vw,48px);">Один мастер,<br>один верстак, своё клеймо</h2>
+    <p class="lead">Явь — это мастерская одного человека, где изделие не покидает стол, пока не готово полностью.</p>
+    <p>Название мы взяли неслучайно: «явь» — это то, что осязаемо, настоящее, в противовес морокам и подделкам. Так же и здесь — натуральная кожа растительного дубления, седельный шов вручную, обрезной край, доведённый до зеркала.</p>
+    <p>Каждое изделие маркируется фирменным клеймом — деревом с корнями, уходящими вглубь кожи, и держит форму годами, не теряя характер.</p>
+  </div>
+  <div class="about-image">
+    <img src="images/workshop-1.jpg" alt="Рабочий стол мастера">
+    <div class="stitch-frame"></div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="section-head">
+    <h2>Как рождается вещь</h2>
+    <span class="num">от куска кожи до клейма</span>
+  </div>
+  <div class="process-grid">
+    <div class="process-cell"><img src="images/leather-sheet.jpg" alt="Раскрой кожи"><span class="tag">01 · Раскрой</span></div>
+    <div class="process-cell"><img src="images/bench-cut.jpg" alt="Тиснение клейма"><span class="tag">02 · Клеймение</span></div>
+    <div class="process-cell"><img src="images/bag-progress.jpg" alt="Сборка изделия"><span class="tag">03 · Сборка и шов</span></div>
+    <div class="process-cell"><img src="images/sharpening-2.jpg" alt="Заточка инструмента"><span class="tag">04 · Заточка кромки</span></div>
+  </div>
+</section>
+
+<section class="catalog" id="catalog">
+  <div class="section-head">
+    <h2>Изделия</h2>
+    <span class="num">03 модели в наличии</span>
+  </div>
+  <div class="catalog-grid">
+    <div class="product-card">
+      <div class="product-frame"><img src="images/bag-front.jpg" alt="Сумка через плечо Явь"></div>
+      <div class="product-meta"><h3>Сумка «Странник»</h3><span class="price">от 12 900 ₽</span></div>
+      <p class="product-desc">Кожа растительного дубления, латунная фурнитура, регулируемый ремень.</p>
+    </div>
+    <div class="product-card">
+      <div class="product-frame"><img src="images/bag-side.jpg" alt="Сумка Явь сбоку"></div>
+      <div class="product-meta"><h3>Сумка «Странник», профиль</h3><span class="price">от 12 900 ₽</span></div>
+      <p class="product-desc">Жёсткая форма держится без подкладки — за счёт плотности кожи.</p>
+    </div>
+    <div class="product-card">
+      <div class="product-frame"><img src="images/watch-strap.jpg" alt="Ремешок для часов ручной работы"></div>
+      <div class="product-meta"><h3>Ремешок для часов</h3><span class="price">от 2 400 ₽</span></div>
+      <p class="product-desc">Ручная прошивка вощёной нитью, под любой диаметр корпуса.</p>
+    </div>
+  </div>
+</section>
+
+<section class="materials" id="materials">
+  <div class="materials-img"><img src="images/tags.jpg" alt="Бирки с клеймом Явь"></div>
+  <div class="materials-text">
+    <span class="eyebrow">Материалы и фурнитура</span>
+    <h2>Только то,<br>что стареет красиво</h2>
+    <p>Кожа растительного дубления патинируется со временем, а не трескается. Латунь покрывается благородной зеленцой, а не ржавчиной.</p>
+    <div class="materials-list">
+      <div><span>Кожа</span><span>раст. дубление, 2.2–3 мм</span></div>
+      <div><span>Нить</span><span>вощёная льняная</span></div>
+      <div><span>Фурнитура</span><span>латунь, без покрытия</span></div>
+      <div><span>Клеймо</span><span>горячее тиснение</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="cta-inner">
+    <span class="eyebrow">Заказ и вопросы</span>
+    <h2>Хотите вещь, сделанную под вас — оставьте контакт, мастер ответит лично</h2>
+    <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Отправлено';">
+      <input type="text" placeholder="Telegram или e-mail" required>
+      <button type="submit">Написать</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <span>© Явь, мастерская кожаных изделий</span>
+  <span><a href="#about">О нас</a> &nbsp;·&nbsp; <a href="#catalog">Изделия</a> &nbsp;·&nbsp; <a href="#contact">Контакты</a></span>
+</footer>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+</script>
+
+</body>
+</html>
